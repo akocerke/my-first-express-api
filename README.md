@@ -11,7 +11,7 @@
 
 `/user` : Soll ein Profil vom User mit firstName, lastName, address, hobbies in json Format zurück geben
 
-`/users` : Sollen mehrere Profile vom Usern mit firstName, lastName, address, hobbies in json Format zurück geben
+`/users` : Soll mehrere Profile von Usern mit firstName, lastName, address, hobbies in json Format zurück geben
 
 `/todos` : Soll eine Liste von "todos" in json Format zurück geben
 

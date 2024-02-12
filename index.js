@@ -5,7 +5,7 @@ require('dotenv').config();
 // Zugriff auf Umgebungsvariablen
 const PORT  = process.env.PORT;
 // Zugriff auf externe userData
-const user2 = require('./userData');
+const userData = require('./userData');
 
 // Initialisierung von expres
 const app = express();
@@ -21,21 +21,31 @@ app.get("/profile", (req, res) => {
 });
 
 // =============================  neue GET Route zu /user2 von udserData.js ================
-app.get('/user2', (req, res) => {
-  res.json(user2);
+app.get('/users', (req, res) => {
+  res.json(userData);
 });
 
 // =============================  neue Get Route zu /user ==================================
-
 app.get("/user", (req, res) => {
-  res.json({
-    id: 1,
-    firstName: "Max",
-    lastName: "Power",
-    address: "Firststreet. 56, Boston",
-    hobbies: ["schwimmen", "lesen", "reiten"]
-  });
+  const user = {
+    "id": 1,
+    "firstName": "Max",
+    "lastName": "Power",
+    "address": "Firststreet. 56, Boston",
+    "hobbies": ["schwimmen", "lesen", "reiten"]
+  };
+  res.json(user);
 });
+
+// =============================  neue Get Route zu /user Abfrage über userData userid in Postman App =========
+// app.get("/user", (req, res) => {
+//  const {userid} = req.query
+//  console.log(userid)
+//  const user = userData.find((item)=> item.id == userid)
+//  console.log(user)
+//  res.json(user);
+// });
+
 
 // =============================  neue GET Route /todos ======================================
 app.get("/todos", (req, res) => {

@@ -65,7 +65,7 @@ app.post("/user", (req, res) => {
   console.log(newUser, "Benutzer erfolgreich hinzugefügt");
 });
 
-app.put("/user/:id", (req, res) => {
+app.put("/user/adduser/:id", (req, res) => {
   const userId = req.params.id;
   const { firstName, lastName, birthday } = req.body;
 

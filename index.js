@@ -64,8 +64,8 @@ app.post("/user", (req, res) => {
   res.json({ message: "Benutzer erfolgreich hinzugefügt", newUser });
   console.log(newUser, "Benutzer erfolgreich hinzugefügt");
 });
-
-app.put("/user/adduser/:id", (req, res) => {
+// ============================ neue PUT Anfrage zu user/adduser Einen user update
+app.put("/user/update/:id", (req, res) => {
   const userId = req.params.id;
   const { firstName, lastName, birthday } = req.body;
 
@@ -85,6 +85,32 @@ app.put("/user/adduser/:id", (req, res) => {
 
   
 });
+
+// ============================ DELETE Anfrage um EINEN user zu löschen ==================================================
+
+// DELETE-Anfrage um EINEN user zu löschen
+app.delete("/user/delete/:id", (req, res) => {
+  const userId = req.params.id;
+
+  // Finde den Index des Benutzers mit der angegebenen ID
+  const userIndex = userData.findIndex(user => user.id == userId);
+
+  if (userIndex === -1) {
+    console.log(`Benutzer mit der ID ${userId} nicht gefunden.`);
+    return res.status(404).json({ message: `Benutzer mit der ID ${userId} nicht gefunden.` });
+  }
+
+  // Entferne den Benutzer aus dem userData-Array und speichere ihn
+  const deletedUser = userData.splice(userIndex, 1)[0];
+
+  // Ausgabe des gelöschten Benutzers in der Konsole
+  console.log(`Benutzer mit der ID ${userId} wurde erfolgreich gelöscht:`, deletedUser);
+
+  // Bestätigungsnachricht senden
+  res.json({ message: `Benutzer mit der ID ${userId} erfolgreich gelöscht` });
+});
+
+
 
 
 

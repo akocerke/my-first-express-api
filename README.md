@@ -17,3 +17,7 @@
 
 `/todos` : GET - Soll eine Liste von "todos" in json Format zurück geben
 
+`/user/delete/:id`: DELETE - soll einen User löschen
+
+`/user/update/:id`  PUT -soll einen User Daten updaten
+

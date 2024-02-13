@@ -110,20 +110,6 @@ app.delete("/user/delete/:id", (req, res) => {
   res.json({ message: `Benutzer mit der ID ${userId} erfolgreich gelöscht` });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // =============================  neue GET Route /todos ======================================
 // app.get("/todos", (req, res) => {
 //   const todos = [

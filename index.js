@@ -1,17 +1,21 @@
 const express = require("express");
 const cors = require("cors");
 require('dotenv').config();
+const bodyParser = require("body-parser");
 
 // Zugriff auf Umgebungsvariablen
 const {PORT}  = process.env;
+
 // Zugriff auf externe userData
 const userData = require('./userData');
 const todos = require('./todos');
 
 // Initialisierung von expres
 const app = express();
-// Use for development
+// Middleware verwenden
+app.use(bodyParser.json()); // Verwende bodyParser, um JSON-Daten im Anfrage-Body zu verarbeiten
 app.use(cors());
+
 
 app.get("/test", (req, res) => {
   res.send("Hello World!");
@@ -46,6 +50,52 @@ app.get("/user", (req, res) => {
  console.log(user)
  res.json(user);
 });
+
+// ============================ neue POST Anfrage zu /users EINEN USER hinzufügen ======================
+app.post("/user", (req, res) => {
+  const { firstName, lastName, birthday } = req.body; // Daten für den neuen Benutzer aus dem Anfrage-Body extrahieren
+  const id = userData.length + 1; // Neue ID für den Benutzer festlegen basierend auf der Länge des userData-Arrays
+  const newUser = { id, firstName, lastName, birthday }; // Neues Benutzerobjekt erstellen
+
+  // Neuen Benutzer zum userData-Array hinzufügen
+  userData.push(newUser);
+
+  // Bestätigungsnachricht senden
+  res.json({ message: "Benutzer erfolgreich hinzugefügt", newUser });
+  console.log(newUser, "Benutzer erfolgreich hinzugefügt");
+});
+
+app.put("/user/:id", (req, res) => {
+  const userId = req.params.id;
+  const { firstName, lastName, birthday } = req.body;
+
+  // Finde den Benutzer mit der angegebenen ID
+  const userIndex = userData.findIndex(user => user.id == userId);
+
+  if (userIndex === -1) {
+    return res.status(404).json({ message: `Benutzer mit der ID ${userId} nicht gefunden.` });
+  }
+
+  // Aktualisiere die Benutzerdaten
+  userData[userIndex] = { ...userData[userIndex], firstName, lastName, birthday };
+
+  console.log(`Benutzer mit der ID ${userId} erfolgreich aktualisiert`, userData[userIndex]);
+  // Bestätigungsnachricht senden
+  res.json({ message: `Benutzer mit der ID ${userId} erfolgreich aktualisiert`, updatedUser: userData[userIndex] });
+
+  
+});
+
+
+
+
+
+
+
+
+
+
+
 
 
 // =============================  neue GET Route /todos ======================================
@@ -83,7 +133,6 @@ app.get("/todo", (req, res) => {
   
   res.json(filteredTodos);
 });
-
 
 
 

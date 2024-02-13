@@ -5,13 +5,15 @@
 
 ## Dokumentation
 
-`/test` : Soll eine Testroute darstellen und Gibt ein Hello World! zurück
+`/test` : GET - Soll eine Testroute darstellen und Gibt ein Hello World! zurück
 
-`/profile` : Soll ein Profil vom User in json Format zurück geben
+`/profile` : GET - Soll ein Profil vom User in json Format zurück geben
 
-`/user` : Soll ein Profil vom User mit firstName, lastName, address, hobbies in json Format zurück geben
+`/user` : GET - Soll ein Profil vom User mit firstName, lastName, birthday  in json Format zurück geben
 
-`/users` : Soll mehrere Profile von Usern mit firstName, lastName, address, hobbies in json Format zurück geben
+`/user` : POST - Soll ein Profil vom User mit firstName, lastName, birthday in json Format einfügen
 
-`/todos` : Soll eine Liste von "todos" in json Format zurück geben
+`/users` : GET - Soll mehrere Profile von Usern mit firstName, lastName, birthday in json Format zurück geben
+
+`/todos` : GET - Soll eine Liste von "todos" in json Format zurück geben
 

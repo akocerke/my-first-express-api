@@ -160,8 +160,51 @@ app.get("/todo", (req, res) => {
   res.json(filteredTodos);
 });
 
+// ============================================= POST-Anfrage, um ein neues Todo hinzuzufügen
+app.post("/todo/add", (req, res) => {
+  const { title, completed } = req.body;
+  const id = todos.length + 1;
+  const newTodo = { id, title, completed };
 
+  todos.push(newTodo);
 
+  res.json({ message: "Todo erfolgreich hinzugefügt", newTodo });
+});
+
+// ============================================ PUT-Anfrage, um ein vorhandenes Todo zu aktualisieren
+app.put("/todo/update/:id", (req, res) => {
+  const todoId = req.params.id;
+  const { title, completed } = req.body;
+
+  const todoIndex = todos.findIndex(todo => todo.id == todoId);
+
+  if (todoIndex === -1) {
+    console.log(`ID: ${todoId} nicht gefunden`);
+    return res.status(404).json({ message: `Todo mit der ID ${todoId} nicht gefunden.` });
+  }
+
+  todos[todoIndex] = { ...todos[todoIndex], title, completed };
+
+  console.log(`ID: ${todoId} erfolgreich aktualisiert`);
+  res.json({ message: `Todo mit der ID ${todoId} erfolgreich aktualisiert`, updatedTodo: todos[todoIndex] });
+});
+
+// =========================================== DELETE-Anfrage, um ein Todo zu löschen
+app.delete("/todo/delete/:id", (req, res) => {
+  const todoId = req.params.id;
+
+  const todoIndex = todos.findIndex(todo => todo.id == todoId);
+
+  if (todoIndex === -1) {
+    console.log(`ID: ${todoId} nicht gefunden`);
+    return res.status(404).json({ message: `Todo mit der ID ${todoId} nicht gefunden.` });
+  }
+
+  todos.splice(todoIndex, 1);
+
+  console.log(`ID: ${todoId} erfolgreich gelöscht`);
+  res.json({ message: `Todo mit der ID ${todoId} erfolgreich gelöscht` });
+});
 
 // App hört im folgenden auf den Port, welcher über die Umgebungsvariable definiert ist
 app.listen(PORT, () => {

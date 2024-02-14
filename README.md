@@ -58,3 +58,12 @@ Hier befindet sich alle Routen mit dem Prefix `/v1/user/...`
 1. GET - /v1/user/profile: Profil des Nutzers erhalten
 2. PUT - /v1/user/update: Profil Updaten
 3. DELETE /v1/user/delete: Löschen des Benutzers
+
+
+### [src/routes/members](./src/routes/members/index.js)
+Hier befindet sich alle Routen mit dem Prefix `/v1/members/...`
+
+
+1. GET - `/v1/members/:todoId`: Mitglieder erhalten
+2. POST - `/v1/members/add` : Mitglied hinzufügen
+3. DELETE - `/v1/members/remove/:todoId`: Mitglied löschen

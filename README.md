@@ -3,10 +3,6 @@
 1. `npm install` Pakete nachinstallieren
 2. `npm run dev`, um API-Server auf dem Port, welcher in der `.env` Datei definiert ist, zu starten
 
-## Dokumentation
-
-`/test` : Soll eine Testroute darstellen und Gibt ein Hello World! zurück
-
 ## Szenario
 
 1. Wir möchten eine Todo App entwickeln
@@ -32,7 +28,7 @@
 
 Hier befinden sich alle untergeordneten routen
 
-### [src/routes/auth](./src/routes/auth/index.js)
+## [src/routes/auth](./src/routes/auth/index.js)
 
 Hier befindet sich alle Routen mit dem Prefix `/v1/auth/...`
 
@@ -40,7 +36,7 @@ Hier befindet sich alle Routen mit dem Prefix `/v1/auth/...`
 2. POST - /v1/auth/signup - Benutzer erstellen
 3. DELETE - /v1/auth/logout - Benutzer ausloggen
 
-### [src/routes/todos](./src/routes/todos/index.js)
+## [src/routes/todos](./src/routes/todos/index.js)
 
 Hier befindet sich alle Routen mit dem Prefix `/v1/todos/...`
 
@@ -51,7 +47,7 @@ Hier befindet sich alle Routen mit dem Prefix `/v1/todos/...`
 5. GET - /v1/todos/byid: Ein einzelnes todo zurück geben
 6. GET - /v1/todos/byuserid: Alle Todos von einem Benutzer
 
-### [src/routes/user](./src/routes/user/index.js)
+## [src/routes/user](./src/routes/user/index.js)
 
 Hier befindet sich alle Routen mit dem Prefix `/v1/user/...`
 
@@ -60,10 +56,11 @@ Hier befindet sich alle Routen mit dem Prefix `/v1/user/...`
 3. DELETE /v1/user/delete: Löschen des Benutzers
 
 
-### [src/routes/members](./src/routes/members/index.js)
+## [src/routes/members](./src/routes/members/index.js)
 Hier befindet sich alle Routen mit dem Prefix `/v1/members/...`
 
 
 1. GET - `/v1/members/:todoId`: Mitglieder erhalten
 2. POST - `/v1/members/add` : Mitglied hinzufügen
 3. DELETE - `/v1/members/remove/:todoId`: Mitglied löschen
+

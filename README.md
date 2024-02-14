@@ -23,6 +23,7 @@
 - bindet die [/user](./src/routes/user/index.js) mit ein:User Route ist also unter dem Pfad /v1/user erreichbar
 - bindet die [/auth](./src/routes/auth/index.js) mit ein:Auth Route ist also unter dem Pfad /v1/auth erreichbar
 - bindet die [/todos](./src/routes/todos/index.js) mit ein:Todos Route ist also unter dem Pfad /v1/todos erreichbar
+- bindet die [/members](./src/routes/members/index.js) mit ein:Members Route ist also unter dem Pfad /v1/members erreichbar
 
 ## [src/routes](./src/routes)
 

@@ -62,6 +62,6 @@ Hier befindet sich alle Routen mit dem Prefix `/v1/members/...`
 
 
 1. GET - `/v1/members/:todoId`: Mitglieder erhalten
-2. POST - `/v1/members/add` : Mitglied hinzufügen
+2. POST - `/v1/members/add`: Mitglied hinzufügen
 3. DELETE - `/v1/members/remove/:todoId`: Mitglied löschen
 

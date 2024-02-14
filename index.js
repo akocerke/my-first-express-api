@@ -3,6 +3,7 @@ const cors = require("cors");
 require('dotenv').config();
 const bodyParser = require("body-parser");
 
+
 // Zugriff auf Umgebungsvariablen
 const {PORT}  = process.env;
 
@@ -15,6 +16,10 @@ const app = express();
 // Middleware verwenden
 app.use(bodyParser.json()); // Verwende bodyParser, um JSON-Daten im Anfrage-Body zu verarbeiten
 app.use(cors());
+
+// import Status Codes
+const { ReasonPhrases, StatusCodes } = require('http-status-codes');
+
 
 
 app.get("/test", (req, res) => {
@@ -66,25 +71,25 @@ app.post("/user", (req, res) => {
 });
 // ============================ neue PUT Anfrage zu user/adduser Einen user update
 app.put("/user/update/:id", (req, res) => {
-  const userId = req.params.id;
-  const { firstName, lastName, birthday } = req.body;
+    const userId = req.params.id;
+    const { firstName, lastName, birthday } = req.body;
 
-  // Finde den Benutzer mit der angegebenen ID
-  const userIndex = userData.findIndex(user => user.id == userId);
+    // Finde den Benutzer mit der angegebenen ID
+    const userIndex = userData.findIndex(user => user.id == userId);
 
-  if (userIndex === -1) {
-    return res.status(404).json({ message: `Benutzer mit der ID ${userId} nicht gefunden.` });
-  }
+    if (userIndex === -1) {
+        return res.status(StatusCodes.BAD_REQUEST).json({ message: `Benutzer mit der ID ${userId} nicht gefunden.` });
+    }
 
-  // Aktualisiere die Benutzerdaten
-  userData[userIndex] = { ...userData[userIndex], firstName, lastName, birthday };
+    // Aktualisiere die Benutzerdaten
+    const updatedUser = { ...userData[userIndex], firstName, lastName, birthday };
+    userData[userIndex] = updatedUser;
 
-  console.log(`Benutzer mit der ID ${userId} erfolgreich aktualisiert`, userData[userIndex]);
-  // Bestätigungsnachricht senden
-  res.json({ message: `Benutzer mit der ID ${userId} erfolgreich aktualisiert`, updatedUser: userData[userIndex] });
-
-  
+    console.log(`Benutzer mit der ID ${userId} erfolgreich aktualisiert`, updatedUser);
+    // Bestätigungsnachricht senden
+    res.status(StatusCodes.OK).json({ message: `Benutzer mit der ID ${userId} erfolgreich aktualisiert`, updatedUser });
 });
+
 
 // ============================ DELETE Anfrage um EINEN user zu löschen ==================================================
 

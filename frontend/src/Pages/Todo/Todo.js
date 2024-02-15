@@ -17,7 +17,7 @@ const Todo = () => {
   return (
     <Content>
       <div className={styles.todo}>
-        <h2>Meine ToDos</h2>
+        <h2>ALLE ToDos</h2>
         <ul className={styles.todoList}>
           {todos.map(todo => (
             <li key={todo.id} className={styles.todoItem}>

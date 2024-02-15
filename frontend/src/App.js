@@ -1,10 +1,13 @@
+// App.js
+import React from 'react';
+import Navbar from './Layout/Navbar/Navbar';
+import Home from './Pages/Home/Home';
 
-import './styles/App.css';
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
-     
+    <div>
+      <Navbar />
+      <Home />
     </div>
   );
 }

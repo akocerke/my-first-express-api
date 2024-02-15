@@ -16,9 +16,12 @@ const Todo = () => {
     <Content>
       <div className={styles.todo}>
         <h2>Meine ToDos</h2>
-        <ul>
+        <ul className={styles.todoList}>
           {todos.map(todo => (
-            <li key={todo.id}>{todo.title}</li>
+            <li key={todo.id} className={styles.todoItem}>
+              <input type="checkbox" checked={todo.completed} onChange={() => {}} />
+              <span>{todo.title}</span>
+            </li>
           ))}
         </ul>
       </div>

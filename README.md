@@ -33,28 +33,29 @@ Hier befinden sich alle untergeordneten routen
 
 Hier befindet sich alle Routen mit dem Prefix `/v1/auth/...`
 
-1. GET - /v1/auth/login: Benutzer einloggen
-2. POST - /v1/auth/signup - Benutzer erstellen
-3. DELETE - /v1/auth/logout - Benutzer ausloggen
+1. GET - `/v1/auth/login`: Benutzer einloggen
+2. POST - `/v1/auth/signup`: - Benutzer erstellen
+3. DELETE - `/v1/auth/logout`: - Benutzer ausloggen
 
 ## [src/routes/todos](./src/routes/todos/index.js)
 
 Hier befindet sich alle Routen mit dem Prefix `/v1/todos/...`
 
-1. PUT - /v1/todos/update: Update Todo
-2. PUT - /v1/todos/mark: Todo erledigt markieren
-3. POST - /v1/todos/create Todo erstellen
-4. DELETE - /v1/todo/delete TODO löschen
-5. GET - /v1/todos/byid: Ein einzelnes todo zurück geben
-6. GET - /v1/todos/byuserid: Alle Todos von einem Benutzer
+1. PUT - `/v1/todos/update`: Update Todo
+2. PUT - `/v1/todos/mark`: Todo erledigt markieren
+3. POST - `/v1/todos/create`: Todo erstellen
+4. DELETE - `/v1/todo/delete`: TODO löschen
+5. GET - `/v1/todos/byid`: Ein einzelnes todo zurück geben
+6. GET - `/v1/todos/byuserid`: Alle Todos von einem Benutzer
+7. GET - `/v1/todos/all`: Alle Todos anzeigen
 
 ## [src/routes/user](./src/routes/user/index.js)
 
 Hier befindet sich alle Routen mit dem Prefix `/v1/user/...`
 
-1. GET - /v1/user/profile: Profil des Nutzers erhalten
-2. PUT - /v1/user/update: Profil Updaten
-3. DELETE /v1/user/delete: Löschen des Benutzers
+1. GET - `/v1/user/profile`: Profil des Nutzers erhalten
+2. PUT - `/v1/user/update`: Profil Updaten
+3. DELETE `/v1/user/delete`: Löschen des Benutzers
 
 
 ## [src/routes/members](./src/routes/members/index.js)

@@ -3,6 +3,22 @@ const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 const todos = require('../../../todos');
 const TodoRouter = Router(); // Hier wird TodoRouter definiert
 
+// GET /all, um alle Todos anzuzeigen
+TodoRouter.get("/all", (req, res) => {
+  try {
+    if (todos.length === 0) {
+      console.log("Keine Todos gefunden.");
+      return res.status(StatusCodes.NOT_FOUND).json({ message: "Keine Todos gefunden." });
+    }
+
+    console.log("Alle Todos gefunden.");
+    res.status(StatusCodes.OK).json({ message: "Alle Todos gefunden.", todos: todos });
+  } catch (error) {
+    console.error("Fehler beim Abrufen aller Todos:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Fehler beim Abrufen aller Todos." });
+  }
+});
+
 
 // GET-Anfrage, um ein einzelnes Todo anhand der ID zurückzugeben
 TodoRouter.get("/byid/:id", (req, res) => {

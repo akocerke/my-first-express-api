@@ -10,6 +10,8 @@
   
   .logo {
     font-size: 1.5rem;
+    color: #fff; /* Textfarbe für das Logo */
+    text-decoration: none; /* Keine Unterstreichung */
   }
   
   .navLinks {
@@ -26,3 +28,6 @@
     text-decoration: none;
   }
   
+  .navLinks li a:hover {
+    color: #ffcc00; /* Ändere die Farbe beim Hovern */
+  }

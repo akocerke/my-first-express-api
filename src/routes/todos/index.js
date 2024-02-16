@@ -50,6 +50,7 @@ TodoRouter.get("/byuserid/:userId", (req, res) => {
   console.log(`Todos gefunden für Benutzer mit der ID ${userId}`);
   res.status(StatusCodes.OK).json({ message: `Todos gefunden für Benutzer mit der ID ${userId}`, todos: userTodos });
 });
+
 // POST-Anfrage, um ein neues Todo hinzuzufügen
 TodoRouter.post("/create", (req, res) => {
     const { title, completed } = req.body;

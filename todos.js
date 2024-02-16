@@ -1,64 +1,88 @@
-// todos.js
+//  todos.js
 const todos = [
     { 
         id: 1, 
         userId: 1,
         title: "Design festlegen", 
-        completed: true 
+        completed: true,
+        doneByDate: new Date('2024-12-17') 
     },
     { 
         id: 2, 
         userId: 1,
-        title: "Implementierung beginnen", 
-        completed: false 
+        title: "Wireframes erstellen", 
+        completed: false,
+        doneByDate: new Date('2024-12-19') 
     },
     { 
         id: 3, 
         userId: 2,
-        title: "Einkäufe erledigen", 
-        completed: false 
+        title: "Frontend-Prototyp entwickeln", 
+        completed: true,
+        doneByDate: new Date('2024-12-20') 
     },
     { 
         id: 4, 
         userId: 2,
-        title: "Präsentation vorbereiten", 
-        completed: true 
+        title: "Backend-Infrastruktur planen", 
+        completed: false,
+        doneByDate: new Date('2024-12-18') 
     },
     { 
         id: 5, 
         userId: 3,
-        title: "Sport machen", 
-        completed: false 
+        title: "Datenbankmodellierung durchführen", 
+        completed: true,
+        doneByDate: new Date('2024-12-20') 
     },
     { 
         id: 6, 
         userId: 3,
-        title: "Rechnungen bezahlen", 
-        completed: false 
+        title: "API-Routen definieren", 
+        completed: false,
+        doneByDate: new Date('2024-12-22') 
     },
     { 
         id: 7, 
         userId: 4,
-        title: "Geburtstagsparty planen", 
-        completed: false 
+        title: "Authentifizierungssystem implementieren", 
+        completed: true,
+        doneByDate: new Date('2024-12-21') 
     },
     { 
         id: 8, 
         userId: 4,
-        title: "Geschenk kaufen", 
-        completed: true 
+        title: "Benutzeroberfläche gestalten", 
+        completed: false,
+        doneByDate: new Date('2024-12-23') 
     },
     { 
         id: 9, 
         userId: 5,
-        title: "Urlaub buchen", 
-        completed: false 
+        title: "Komponentenbibliothek integrieren", 
+        completed: true,
+        doneByDate: new Date('2024-12-25') 
     },
     { 
         id: 10, 
         userId: 5,
-        title: "Hotel reservieren", 
-        completed: true 
+        title: "Responsive Design implementieren", 
+        completed: false,
+        doneByDate: new Date('2024-12-24') 
+    },
+    { 
+        id: 11, 
+        userId: 6,
+        title: "Backend-Endpunkte implementieren", 
+        completed: true,
+        doneByDate: new Date('2024-12-26') 
+    },
+    { 
+        id: 12, 
+        userId: 6,
+        title: "Datenvalidierung einrichten", 
+        completed: false,
+        doneByDate: new Date('2024-12-27') 
     }
 ];
 

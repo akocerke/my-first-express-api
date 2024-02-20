@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { StatusCodes, ReasonPhrases } = require("http-status-codes");
-const { Todo } = require('../../../Todo');
+const Todo  = require('../../../Todo');
 const TodoRouter = Router(); 
 
 // GET /all, um alle Todos anzuzeigen
@@ -43,18 +43,24 @@ TodoRouter.get("/byid/:id", (req, res) => {
 
 
 // GET-Anfrage, um alle Todos eines Benutzers anhand der Benutzer-ID zurückzugeben
-TodoRouter.get("/byuserid/:userId", (req, res) => {
+TodoRouter.get("/byuserid/:userId", async (req, res) => {
   const userId = req.params.userId;
 
-  const userTodos = todos.filter(todo => todo.userId == userId);
+  try {
+    // Todos aus der Datenbank abrufen, die zur Benutzer-ID gehören
+    const userTodos = await Todo.findAll({ where: { userId: userId } });
 
-  if (userTodos.length === 0) {
+    if (userTodos.length === 0) {
       console.log(`Keine Todos gefunden für Benutzer mit der ID ${userId}`);
       return res.status(StatusCodes.NOT_FOUND).json({ message: `Keine Todos gefunden für Benutzer mit der ID ${userId}` });
-  }
+    }
 
-  console.log(`Todos gefunden für Benutzer mit der ID ${userId}`);
-  res.status(StatusCodes.OK).json({ message: `Todos gefunden für Benutzer mit der ID ${userId}`, todos: userTodos });
+    console.log(`Todos gefunden für Benutzer mit der ID ${userId}`);
+    res.status(StatusCodes.OK).json({ message: `Todos gefunden für Benutzer mit der ID ${userId}`, todos: userTodos });
+  } catch (error) {
+    console.error(`Fehler beim Abrufen der Todos für Benutzer mit der ID ${userId}:`, error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: `Fehler beim Abrufen der Todos für Benutzer mit der ID ${userId}.` });
+  }
 });
 
 // POST-Anfrage, um ein neues Todo hinzuzufügen

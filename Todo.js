@@ -1,5 +1,3 @@
-// Todo.js
-
 const { DataTypes } = require('sequelize');
 const sequelize = require('./database');
 
@@ -12,6 +10,9 @@ const Todo = sequelize.define('Todo', {
   completed: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
+  },
+  doneByDate: {
+    type: DataTypes.DATE // Datumsfeld hinzufügen
   }
 }, {
   tableName: 'todos', // Name der Tabelle in der MySQL-Datenbank

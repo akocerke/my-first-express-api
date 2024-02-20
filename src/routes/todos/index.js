@@ -1,19 +1,25 @@
 const { Router } = require("express");
 const { StatusCodes, ReasonPhrases } = require("http-status-codes");
-const todos = require('../../../todos');
-const TodoRouter = Router(); // Hier wird TodoRouter definiert
+const { Todo } = require('../../../Todo');
+const TodoRouter = Router(); 
 
 // GET /all, um alle Todos anzuzeigen
-TodoRouter.get("/all", (req, res) => {
+TodoRouter.get("/all", async (req, res) => {
   try {
+    // Alle Todos aus der Datenbank abrufen
+    const todos = await Todo.findAll();
+
+    // Überprüfen, ob Todos vorhanden sind
     if (todos.length === 0) {
       console.log("Keine Todos gefunden.");
       return res.status(StatusCodes.NOT_FOUND).json({ message: "Keine Todos gefunden." });
     }
 
+    // Wenn Todos vorhanden sind, senden Sie sie als Antwort
     console.log("Alle Todos gefunden.");
     res.status(StatusCodes.OK).json({ message: "Alle Todos gefunden.", todos: todos });
   } catch (error) {
+    // Fehler beim Abrufen der Todos behandeln
     console.error("Fehler beim Abrufen aller Todos:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Fehler beim Abrufen aller Todos." });
   }

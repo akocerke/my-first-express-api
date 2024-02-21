@@ -63,16 +63,33 @@ TodoRouter.get("/byuserid/:userId", async (req, res) => {
   }
 });
 
+// Annahme: Zu Beginn ist todos ein leeres Array
+let todos = [];
+
 // POST-Anfrage, um ein neues Todo hinzuzufügen
-TodoRouter.post("/create", (req, res) => {
-    const { title, completed } = req.body;
-    const id = todos.length + 1;
-    const newTodo = { id, title, completed };
-  
-    todos.push(newTodo);
-  
+TodoRouter.post("/create", async (req, res) => {
+  try {
+    const { userId, title, completed, doneByDate } = req.body;
+
+    // Neues Todo in der Datenbank erstellen
+    const newTodo = await Todo.create({
+      userId,
+      title,
+      completed,
+      doneByDate
+    });
+
+    // Das neue Todo zur Antwort senden
     res.status(StatusCodes.OK).json({ message: "Todo erfolgreich hinzugefügt", newTodo });
-  });
+    // Logge das neue Todo in der Konsole
+    console.log("Neues Todo wurde hinzugefügt:", newTodo.toJSON());
+    
+  } catch (error) {
+    console.error("Fehler beim Hinzufügen eines neuen Todos:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Fehler beim Hinzufügen eines neuen Todos." });
+  }
+});
+
   
   // PUT-Anfrage, um ein vorhandenes Todo zu aktualisieren
   TodoRouter.put("/update/:id", (req, res) => {

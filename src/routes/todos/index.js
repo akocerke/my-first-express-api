@@ -128,20 +128,27 @@ TodoRouter.post("/create", async (req, res) => {
   });
   
   // DELETE-Anfrage, um ein Todo zu löschen
-  TodoRouter.delete("/delete/:id", (req, res) => {
-    const todoId = req.params.id;
-  
-    const todoIndex = todos.findIndex(todo => todo.id == todoId);
-  
-    if (todoIndex === -1) {
+TodoRouter.delete("/delete/:id", async (req, res) => {
+  const todoId = req.params.id;
+
+  try {
+    // Versuche, das Todo mit der angegebenen ID zu finden und zu löschen
+    const deletedTodo = await Todo.destroy({ where: { id: todoId } });
+
+    if (!deletedTodo) {
+      // Wenn kein Todo mit der angegebenen ID gefunden wurde, sende einen 404-Statuscode zurück
       console.log(`ID: ${todoId} nicht gefunden`);
       return res.status(StatusCodes.NOT_FOUND).json({ message: `Todo mit der ID ${todoId} nicht gefunden.` });
     }
-  
-    todos.splice(todoIndex, 1);
-  
+
+    // Das Todo wurde erfolgreich gelöscht
     console.log(`ID: ${todoId} erfolgreich gelöscht`);
     res.status(StatusCodes.OK).json({ message: `Todo mit der ID ${todoId} erfolgreich gelöscht` });
-  });
+  } catch (error) {
+    // Fehler beim Löschen des Todos behandeln
+    console.error(`Fehler beim Löschen des Todos mit der ID ${todoId}:`, error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: `Fehler beim Löschen des Todos mit der ID ${todoId}.` });
+  }
+});
   
   module.exports = { TodoRouter };

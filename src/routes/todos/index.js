@@ -110,17 +110,18 @@ TodoRouter.post("/create", async (req, res) => {
   });
   
   // PUT-Anfrage, um ein Todo als erledigt zu markieren
-  TodoRouter.put("/mark/:id", (req, res) => {
+  TodoRouter.put("/mark/:id", async(req, res) => {
     const todoId = req.params.id;
-  
-    const todo = todos.find(todo => todo.id == todoId);
-  
-    if (!todo) {
+    const todoCompleted = req.body.completed;
+
+    const todo = await Todo.update({completed :  todoCompleted} , { where: { id : todoId }});
+    
+    if (!todoId) {
       console.log(`ID: ${todoId} nicht gefunden`);
       return res.status(StatusCodes.NOT_FOUND).json({ message: `Todo mit der ID ${todoId} nicht gefunden.` });
     }
   
-    todo.completed = true;
+    
   
     console.log(`ID: ${todoId} als erledigt markiert`);
     res.status(StatusCodes.OK).json({ message: `Todo mit der ID ${todoId} wurde als erledigt markiert`, updatedTodo: todo });

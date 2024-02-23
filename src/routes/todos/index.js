@@ -2,6 +2,7 @@ const { Router } = require("express");
 const { StatusCodes } = require("http-status-codes");
 const Todo  = require('../../../Todo');
 const TodoRouter = Router(); 
+const User = require('../../../User');
 
 // GET /all, um alle Todos anzuzeigen
 TodoRouter.get("/all", async (req, res) => {
@@ -27,19 +28,25 @@ TodoRouter.get("/all", async (req, res) => {
 
 
 // GET-Anfrage, um ein einzelnes Todo anhand der ID zurückzugeben
-TodoRouter.get("/byid/:id", (req, res) => {
+TodoRouter.get("/byid/:id", async (req, res) => {
   const todoId = req.params.id;
 
-  const todo = todos.find(todo => todo.id == todoId);
-
-  if (!todo) {
-      console.log(`ID: ${todoId} nicht gefunden`);
-      return res.status(StatusCodes.NOT_FOUND).json({ message: `Todo mit der ID ${todoId} nicht gefunden.` });
+  try {
+    const todo = await Todo.findOne({ where: { id: todoId } });
+    
+    if (!todo) {
+        console.log(`ID: ${todoId} nicht gefunden`);
+        return res.status(StatusCodes.NOT_FOUND).json({ message: `Todo mit der ID ${todoId} nicht gefunden.` });
+    }
+  
+    console.log(`Todo mit der ID ${todoId} gefunden`);
+    res.status(StatusCodes.OK).json({ message: `Todo mit der ID ${todoId} gefunden`, todo });
+  } catch (error) {
+    console.error('Fehler beim Abrufen des Todos:', error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Interner Serverfehler beim Abrufen des Todos.' });
   }
-
-  console.log(`Todo mit der ID ${todoId} gefunden`);
-  res.status(StatusCodes.OK).json({ message: `Todo mit der ID ${todoId} gefunden`, todo });
 });
+
 
 
 // GET-Anfrage, um alle Todos eines Benutzers anhand der Benutzer-ID zurückzugeben
@@ -71,6 +78,13 @@ TodoRouter.post("/create", async (req, res) => {
   try {
     const { userId, title, completed, doneByDate } = req.body;
 
+    // Überprüfen, ob der Benutzer existiert
+    const userExists = await User.findByPk(userId);
+    if (!userExists) {
+      console.log(`Benutzer mit ID ${userId} nicht gefunden`);
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: `Benutzer mit ID ${userId} nicht gefunden.` });
+    }
+
     // Neues Todo in der Datenbank erstellen
     const newTodo = await Todo.create({
       userId,
@@ -86,28 +100,52 @@ TodoRouter.post("/create", async (req, res) => {
     
   } catch (error) {
     console.error("Fehler beim Hinzufügen eines neuen Todos:", error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Fehler beim Hinzufügen eines neuen Todos." });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: `Fehler beim Hinzufügen eines neuen Todos für Benutzer mit ID ${userId}.` });
   }
 });
 
+
   
-  // PUT-Anfrage, um ein vorhandenes Todo zu aktualisieren
-  TodoRouter.put("/update/:id", (req, res) => {
-    const todoId = req.params.id;
-    const { title, completed } = req.body;
-  
-    const todoIndex = todos.findIndex(todo => todo.id == todoId);
-  
-    if (todoIndex === -1) {
+// PUT-Anfrage, um ein vorhandenes Todo in der Datenbank zu aktualisieren
+TodoRouter.put("/update/:id", async (req, res) => {
+  const todoId = req.params.id;
+  const { title, userId, completed, doneByDate } = req.body;
+
+  try {
+    // Suche das Todo in der Datenbank
+    const todo = await Todo.findByPk(todoId);
+    
+    // Überprüfe, ob das Todo gefunden wurde
+    if (!todo) {
       console.log(`ID: ${todoId} nicht gefunden`);
       return res.status(StatusCodes.NOT_FOUND).json({ message: `Todo mit der ID ${todoId} nicht gefunden.` });
     }
-  
-    todos[todoIndex] = { ...todos[todoIndex], title, completed };
-  
+
+    // Überprüfen Sie, ob die Benutzer-ID vorhanden ist
+    const userExists = await User.findByPk(parseInt(userId)); // Konvertieren Sie die userId in eine Ganzzahl
+    if (!userExists) {
+      console.log(`Benutzer mit ID ${userId} nicht gefunden`);
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: `Benutzer mit ID ${userId} nicht gefunden.` });
+    }
+
+    // Aktualisiere die Eigenschaften des Todos
+    todo.userId = userId;
+    todo.title = title;
+    todo.completed = completed;
+    todo.doneByDate = doneByDate;
+
+    // Speichere die Änderungen in der Datenbank
+    await todo.save();
+
     console.log(`ID: ${todoId} erfolgreich aktualisiert`);
-    res.status(StatusCodes.OK).json({ message: `Todo mit der ID ${todoId} erfolgreich aktualisiert`, updatedTodo: todos[todoIndex] });
-  });
+    res.status(StatusCodes.OK).json({ message: `Todo mit der ID ${todoId} erfolgreich aktualisiert`, updatedTodo: todo });
+  } catch (error) {
+    console.error('Fehler beim Aktualisieren des Todos:', error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Fehler beim Aktualisieren des Todos' });
+  }
+});
+
+
   
   // PUT-Anfrage, um ein Todo als erledigt zu markieren
   TodoRouter.put("/mark/:id", async(req, res) => {

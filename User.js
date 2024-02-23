@@ -1,10 +1,14 @@
 // User.js
-
 const { DataTypes } = require('sequelize');
 const sequelize = require('./database');
 
 // User-Modell definieren
 const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true // Stellt sicher, dass die id automatisch inkrementiert wird
+  },
   firstName: {
     type: DataTypes.STRING,
     allowNull: false
@@ -23,7 +27,8 @@ const User = sequelize.define('User', {
     allowNull: false
   }
 }, {
-  tableName: 'users' // Name der Tabelle in der MySQL-Datenbank
+  tableName: 'users', // Name der Tabelle in der MySQL-Datenbank
+  timestamps: false // Deaktivieren Sie die automatische Erstellung von createdAt- und updatedAt-Spalten
 });
 
 module.exports = User;

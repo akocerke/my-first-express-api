@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./database');
+const sequelize = require('../setup/database');
 
 // Todo-Modell definieren
 const Todo = sequelize.define('Todo', {

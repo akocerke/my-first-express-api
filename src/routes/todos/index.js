@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const { StatusCodes } = require("http-status-codes");
-const Todo  = require('../../../Todo');
+const Todo  = require('../../database/models/Todo');
 const TodoRouter = Router(); 
-const User = require('../../../User');
+const User = require('../../database/models/User');
 
 // GET /all, um alle Todos anzuzeigen
 TodoRouter.get("/all", async (req, res) => {

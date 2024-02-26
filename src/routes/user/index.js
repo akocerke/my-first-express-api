@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { StatusCodes, ReasonPhrases } = require("http-status-codes");
-const { users } = require("../../../User");
+const { users } = require("../../database/models/User");
 
 const UserRouter = Router();
 

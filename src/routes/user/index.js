@@ -1,52 +1,60 @@
 const { Router } = require("express");
 const { StatusCodes, ReasonPhrases } = require("http-status-codes");
-const { users } = require("../../database/models/User");
+const  User  = require("../../database/models/User");
 
 const UserRouter = Router();
 
 // GET-Anfrage, um das Profil eines bestimmten Benutzers zurückzugeben
-UserRouter.get("/profile", (req, res) => {
-  const userId = parseInt(req.query.userId);
-  if (!userId || isNaN(userId)) {
-    res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
-    return;
+UserRouter.get("/profile/:userId", async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    if (!userId || isNaN(userId)) {
+      return res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
+    }
+  
+    const userProfile = await User.findOne({ where: { id: userId } });
+    if (!userProfile) {
+      return res.status(StatusCodes.NOT_FOUND).send("Benutzer nicht gefunden");
+    }
+  
+    return res.status(StatusCodes.OK).json({ profile: userProfile });
+  } catch (error) {
+    console.error('Fehler beim Abrufen des Benutzerprofils:', error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(ReasonPhrases.INTERNAL_SERVER_ERROR);
   }
-  const userProfile = users.find((user) => user.id === userId);
-  if (!userProfile) {
-    res.status(StatusCodes.NOT_FOUND).send("Benutzer nicht gefunden");
-    return;
-  }
-  res.status(StatusCodes.OK).json({ profile: userProfile });
 });
 
 // PUT-Anfrage, um das Profil eines Benutzers zu aktualisieren
-UserRouter.put("/profile/update", (req, res) => {
-  const { username, userId } = req.body;
-
-  const currentUser = users.find((user) => user.id === userId);
-  if (!currentUser) {
-    res.status(StatusCodes.NOT_FOUND).send("Benutzer nicht gefunden");
-    return;
+UserRouter.put("/profile/update", async (req, res) => {
+  try {
+    const { username, userId } = req.body;
+    const userToUpdate = await User.findByPk(userId);
+    if (!userToUpdate) {
+      return res.status(StatusCodes.NOT_FOUND).send("Benutzer nicht gefunden");
+    }
+    userToUpdate.username = username;
+    await userToUpdate.save();
+    return res.status(StatusCodes.OK).json({ updatedProfile: userToUpdate });
+  } catch (error) {
+    console.error('Fehler beim Aktualisieren des Benutzerprofils:', error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(ReasonPhrases.INTERNAL_SERVER_ERROR);
   }
-
-  currentUser.username = username;
-
-  res.status(StatusCodes.OK).json({ updatedProfile: currentUser });
 });
 
 // DELETE-Anfrage, um das Profil eines Benutzers zu löschen
-UserRouter.delete("/profile/delete", (req, res) => {
-  const { userId } = req.body;
-
-  const index = users.findIndex((user) => user.id === userId);
-  if (index === -1) {
-    res.status(StatusCodes.NOT_FOUND).send("Benutzer nicht gefunden");
-    return;
+UserRouter.delete("/profile/delete", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const userToDelete = await User.findByPk(userId);
+    if (!userToDelete) {
+      return res.status(StatusCodes.NOT_FOUND).send("Benutzer nicht gefunden");
+    }
+    await userToDelete.destroy();
+    return res.status(StatusCodes.OK).json({ deletedUserId: userId });
+  } catch (error) {
+    console.error('Fehler beim Löschen des Benutzerprofils:', error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(ReasonPhrases.INTERNAL_SERVER_ERROR);
   }
-
-  users.splice(index, 1);
-
-  res.status(StatusCodes.OK).json({ deletedUserId: userId });
 });
 
 module.exports = { UserRouter };
